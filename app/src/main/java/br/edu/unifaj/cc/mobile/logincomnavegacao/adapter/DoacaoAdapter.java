@@ -15,7 +15,7 @@ import br.edu.unifaj.cc.mobile.logincomnavegacao.model.Doacao;
 
 /**
  * Adapter para o RecyclerView que exibe a lista de doações.
- * Responsável por criar e популировать cada item da lista.
+ * Responsável por criar e preencher cada item da lista.
  */
 public class DoacaoAdapter extends RecyclerView.Adapter<DoacaoAdapter.DoacaoViewHolder> {
     
@@ -28,33 +28,32 @@ public class DoacaoAdapter extends RecyclerView.Adapter<DoacaoAdapter.DoacaoView
         this.listaDoacoes = listaDoacoes;
     }
     
-    /**
-     * Called when RecyclerView needs a new ViewHolder.
-     */
-    @NonNull
-    @Override
-    public DoacaoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+/**
+ * Chamado quando o RecyclerView precisa de um novo ViewHolder.
+ */
+@Override
+public DoacaoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_doacao, parent, false);
         return new DoacaoViewHolder(view);
     }
     
-    /**
-     * Called by RecyclerView to display the data at the specified position.
-     */
-    @Override
-    public void onBindViewHolder(@NonNull DoacaoViewHolder holder, int position) {
+/**
+ * Chamado pelo RecyclerView para exibir os dados na posição especificada.
+ */
+@Override
+public void onBindViewHolder(@NonNull DoacaoViewHolder holder, int position) {
         Doacao doacao = listaDoacoes.get(position);
         holder.txtData.setText("Data: " + doacao.getData());
         holder.txtLocal.setText("Local: " + doacao.getLocal());
         holder.txtQuantidade.setText("Quantidade: " + doacao.getQuantidade());
     }
     
-    /**
-     * Returns the total number of items in the list.
-     */
-    @Override
-    public int getItemCount() {
+/**
+ * Retorna o número total de itens na lista.
+ */
+@Override
+public int getItemCount() {
         return listaDoacoes.size();
     }
     
