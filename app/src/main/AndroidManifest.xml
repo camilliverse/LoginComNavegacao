@@ -11,15 +11,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginComNavegacao">
+        
+        <!-- Tela de Login - Activity principal -->
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- Tela de Cadastro -->
+        <activity
+            android:name=".CadastroActivity"
+            android:exported="false" />
+        
+        <!-- Tela Principal (Home) -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        
+        <!-- Tela de Registro de Doação -->
+        <activity
+            android:name=".DoacaoActivity"
+            android:exported="false" />
+        
+        <!-- Tela de Histórico -->
+        <activity
+            android:name=".HistoricoActivity"
+            android:exported="false" />
+        
     </application>
 
 </manifest>
