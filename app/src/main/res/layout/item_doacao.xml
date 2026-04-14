@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="#FF4343"
     android:orientation="vertical"
-    android:padding="12dp"
-    android:background="#F5F5F5"
-    android:layout_marginBottom="8dp">
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/txtData"
@@ -13,22 +13,25 @@
         android:layout_height="wrap_content"
         android:text="Data: 13/04/2026"
         android:textSize="14sp"
+        android:textColor="#FFFFFF"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtLocal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="Local: Hospital Central"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp" />
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtQuantidade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="Quantidade: 450ml"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp" />
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
 
 </LinearLayout>

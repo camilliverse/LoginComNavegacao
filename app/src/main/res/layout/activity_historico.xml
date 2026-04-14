@@ -3,12 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:background="#AD2C2C">
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee"
         android:text="Histórico de Doações"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="24dp" />
@@ -24,6 +28,8 @@
         android:id="@+id/btnVoltar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#611D1D"
+        android:fontFamily="@font/montserrat_medium"
         android:text="Voltar" />
 
 </LinearLayout>
