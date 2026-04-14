@@ -1,53 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:background="#AD2C2C">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registrar Doação"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp" />
-
-    <EditText
-        android:id="@+id/editData"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Data (ex: 13/04/2026)"
-        android:inputType="date"
-        android:layout_marginBottom="16dp" />
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <EditText
-        android:id="@+id/editLocal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Local (hospital ou hemocentro)"
-        android:inputType="text"
-        android:layout_marginBottom="16dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bungee"
+            android:text="Doação de Sangue"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
 
-    <EditText
-        android:id="@+id/editQuantidade"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Quantidade (ex: 450ml)"
-        android:inputType="text"
-        android:layout_marginBottom="24dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Registrar Doação"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
 
-    <Button
-        android:id="@+id/btnSalvar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Salvar"
-        android:layout_marginBottom="16dp" />
+        <EditText
+            android:id="@+id/editData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Data (ex: 13/04/2026)"
+            android:inputType="date"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FBFBFB"
+            android:fontFamily="@font/montserrat_medium"
+            android:backgroundTint="#5B0404"
+            android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/btnVoltar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Voltar" />
+        <EditText
+            android:id="@+id/editLocal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Local (hospital ou hemocentro)"
+            android:inputType="text"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FBFBFB"
+            android:fontFamily="@font/montserrat_medium"
+            android:backgroundTint="#5B0404"
+            android:layout_marginBottom="16dp" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/editQuantidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Quantidade (ex: 450ml)"
+            android:inputType="text"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FBFBFB"
+            android:fontFamily="@font/montserrat_medium"
+            android:backgroundTint="#5B0404"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btnSalvar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#9B2020"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Salvar"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnVoltar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#611D1D"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Voltar"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+</ScrollView>
