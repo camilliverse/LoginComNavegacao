@@ -53,13 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, CadastroActivity.class);
             startActivity(intent);
         });
-        
-        // Ajusta padding para barras do sistema
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.editEmail), (v, insets) -> {
-            v.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(), 
-                insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
-            return insets;
-        });
+
     }
     
     /**
