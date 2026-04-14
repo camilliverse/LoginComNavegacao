@@ -55,11 +55,23 @@
             android:layout_marginBottom="16dp" />
 
         <EditText
+            android:id="@+id/editVolumeMl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Volume (ml)"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FBFBFB"
+            android:fontFamily="@font/montserrat_medium"
+            android:backgroundTint="#5B0404"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
             android:id="@+id/editQuantidade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Quantidade em ml"
-            android:inputType="text"
+            android:hint="Quantidade de bolsas"
+            android:inputType="number"
             android:textColor="#FFFFFF"
             android:textColorHint="#FBFBFB"
             android:fontFamily="@font/montserrat_medium"
