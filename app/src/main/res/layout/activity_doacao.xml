@@ -58,7 +58,7 @@
             android:id="@+id/editQuantidade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Quantidade (ex: 450ml)"
+            android:hint="Quantidade em ml"
             android:inputType="text"
             android:textColor="#FFFFFF"
             android:textColorHint="#FBFBFB"

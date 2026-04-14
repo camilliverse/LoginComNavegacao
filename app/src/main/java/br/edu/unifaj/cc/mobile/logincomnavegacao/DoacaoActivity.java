@@ -1,10 +1,16 @@
 package br.edu.unifaj.cc.mobile.logincomnavegacao;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +29,8 @@ public class DoacaoActivity extends AppCompatActivity {
     private Button btnSalvar;
     private Button btnVoltar;
     private PrefsManager prefsManager;
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +52,12 @@ public class DoacaoActivity extends AppCompatActivity {
         editQuantidade = findViewById(R.id.editQuantidade);
         btnSalvar = findViewById(R.id.btnSalvar);
         btnVoltar = findViewById(R.id.btnVoltar);
+        
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt", "BR"));
+        editData.setText(dateFormat.format(calendar.getTime()));
+        
+        editData.setOnClickListener(v -> mostrarDatePicker());
         
         // Configura o botão Salvar
         btnSalvar.setOnClickListener(v -> salvarDoacao());
@@ -73,9 +87,25 @@ public class DoacaoActivity extends AppCompatActivity {
         Toast.makeText(this, "Doação salva com sucesso!", Toast.LENGTH_SHORT).show();
         
         // Limpa os campos
-        editData.setText("");
+        editData.setText(dateFormat.format(calendar.getTime()));
         editLocal.setText("");
         editQuantidade.setText("");
+    }
+    
+    private void mostrarDatePicker() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+            this,
+            (view, year, month, dayOfMonth) -> {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                editData.setText(dateFormat.format(calendar.getTime()));
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
     }
     
     /**
