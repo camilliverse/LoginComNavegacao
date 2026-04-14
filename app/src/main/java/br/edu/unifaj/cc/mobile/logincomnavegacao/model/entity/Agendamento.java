@@ -1,12 +1,14 @@
 package br.edu.unifaj.cc.mobile.logincomnavegacao.model.entity;
 
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.StatusAgendamento;
+
 public class Agendamento {
     private String id;
     private String data;
     private String hora;
     private Hemocentro hemocentro;
     private String cpfDoador;
-    private String status;
+    private StatusAgendamento status;
     private String dataConfirmacao;
     private String observacoes;
 
@@ -19,7 +21,7 @@ public class Agendamento {
         this.hora = hora;
         this.hemocentro = hemocentro;
         this.cpfDoador = cpfDoador;
-        this.status = "PENDENTE";
+        this.status = StatusAgendamento.PENDENTE;
     }
 
     public String getId() {
@@ -62,11 +64,11 @@ public class Agendamento {
         this.cpfDoador = cpfDoador;
     }
 
-    public String getStatus() {
+    public StatusAgendamento getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusAgendamento status) {
         this.status = status;
     }
 
@@ -87,30 +89,30 @@ public class Agendamento {
     }
 
     public boolean isPendente() {
-        return "PENDENTE".equals(status);
+        return status == StatusAgendamento.PENDENTE;
     }
 
     public boolean isConfirmado() {
-        return "CONFIRMADO".equals(status);
+        return status == StatusAgendamento.CONFIRMADO;
     }
 
     public boolean isCancelado() {
-        return "CANCELADO".equals(status);
+        return status == StatusAgendamento.CANCELADO;
     }
 
     public boolean isRealizado() {
-        return "REALIZADO".equals(status);
+        return status == StatusAgendamento.REALIZADO;
     }
 
     public void confirmar() {
-        this.status = "CONFIRMADO";
+        this.status = StatusAgendamento.CONFIRMADO;
     }
 
     public void cancelar() {
-        this.status = "CANCELADO";
+        this.status = StatusAgendamento.CANCELADO;
     }
 
     public void marcarRealizado() {
-        this.status = "REALIZADO";
+        this.status = StatusAgendamento.REALIZADO;
     }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 
 import br.edu.unifaj.cc.mobile.logincomnavegacao.R;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.model.entity.Agendamento;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.StatusAgendamento;
 
 public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.ViewHolder> {
     
@@ -44,7 +45,7 @@ public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.
         holder.txtEndereco.setText(agendamento.getHemocentro().getEndereco().getEnderecoCompleto());
         holder.txtData.setText(agendamento.getData());
         holder.txtHora.setText(agendamento.getHora());
-        holder.txtStatus.setText(agendamento.getStatus());
+        holder.txtStatus.setText(agendamento.getStatus().getDescricao());
         
         int statusColor;
         if (agendamento.isPendente()) {
