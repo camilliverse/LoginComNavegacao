@@ -163,6 +163,38 @@ Os dados são armazenados localmente no dispositivo usando SharedPreferences no 
 - Otávio Siqueira Gonçalves - RA: 12529937
 - Gabriel Rodrigues de Oliveira - RA: 12529520
 
+## Diagramas de Classe
+
+Os diagramas de classes do projeto estão disponíveis na pasta `diagramas/`:
+
+### Arquivos Disponíveis
+
+| Arquivo | Descrição |
+|--------|-----------|
+| `diagramas/classes-dominio.plantuml` | Diagrama do modelo de domínio (PlantUML) |
+| `diagramas/diagrama-doacaoSangue.png` | Diagrama visual em PNG |
+
+![Diagrama](diagramas/diagrama-doacaoSangue.png)
+
+### Estrutura do Modelo de Domínio
+
+```
+model/
+├── enums/
+│   ├── TipoSanguineo (A, B, AB, O)
+│   ├── FatorRh (POSITIVO, NEGATIVO)
+│   ├── StatusAgendamento (PENDENTE, CONFIRMADO, CANCELADO, REALIZADO)
+│   └── StatusBolsa (DISPONIVEL, RESERVADA, UTILIZADA, VENCIDA)
+├── entity/
+│   ├── Hemocentro
+│   ├── Endereco
+│   ├── Agendamento
+│   └── BolsaSangue
+└── user/
+    ├── User
+    └── Doador
+```
+
 ## Licença
 
 MIT

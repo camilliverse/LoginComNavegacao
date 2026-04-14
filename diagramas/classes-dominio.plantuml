@@ -1,0 +1,182 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam arrowColor #333333
+skinparam packageBackgroundColor #f0f0f0
+skinparam packageBorderColor #666666
+skinparam backgroundColor white
+
+title Diagrama de Classes - Modelo de Domínio
+
+' =======================
+' ENUMS
+' =======================
+package "model.enums" {
+
+  enum StatusAgendamento {
+    PENDENTE
+    CONFIRMADO
+    CANCELADO
+    REALIZADO
+    + getDescricao(): String
+  }
+
+  enum TipoSanguineo {
+    A, B, AB, O
+    + getValor(): String
+    + fromValor(String): TipoSanguineo
+  }
+
+  enum FatorRh {
+    POSITIVO, NEGATIVO
+    + getValor(): String
+    + fromValor(String): FatorRh
+  }
+
+  enum StatusBolsa {
+    DISPONIVEL
+    RESERVADA
+    UTILIZADA
+    VENCIDA
+    + getDescricao(): String
+  }
+}
+
+' =======================
+' USER
+' =======================
+package "model.user" {
+
+  class User {
+    - nome: String
+    - email: String
+    - senha: String
+    + getNome(): String
+    + setNome(String)
+    + getEmail(): String
+    + setEmail(String)
+    + getSenha(): String
+    + setSenha(String)
+  }
+
+  class Doador {
+    - cpf: String
+    - tipoSanguineo: TipoSanguineo
+    - fatorRh: FatorRh
+    + getCpf(): String
+    + setCpf(String)
+    + getTipoSanguineo(): TipoSanguineo
+    + setTipoSanguineo(TipoSanguineo)
+    + getFatorRh(): FatorRh
+    + setFatorRh(FatorRh)
+    + getTipoCompleto(): String
+  }
+
+  User <|-- Doador
+}
+
+' =======================
+' ENTITIES
+' =======================
+package "model.entity" {
+
+  class Hemocentro {
+    - id: String
+    - nome: String
+    - endereco: Endereco
+    - telefone: String
+    - email: String
+    - horarioAbertura: String
+    - horarioFechamento: String
+    - funcionamento24Horas: boolean
+    - capacidadeColeta: double
+    + getHorarioFuncionamento(): String
+  }
+
+  class Endereco {
+    - logradouro: String
+    - numero: String
+    - complemento: String
+    - bairro: String
+    - cidade: String
+    - estado: String
+    - cep: String
+    + getEnderecoCompleto(): String
+  }
+
+  class Agendamento {
+    - id: String
+    - data: String
+    - hora: String
+    - hemocentro: Hemocentro
+    - cpfDoador: String
+    - status: StatusAgendamento
+    - dataConfirmacao: String
+    - observacoes: String
+    + isPendente(): boolean
+    + isConfirmado(): boolean
+    + isCancelado(): boolean
+    + isRealizado(): boolean
+    + confirmar()
+    + cancelar()
+    +marcarRealizado()
+  }
+
+  class BolsaSangue {
+    - codigo: String
+    - tipoSanguineo: TipoSanguineo
+    - fatorRh: FatorRh
+    - dataColeta: String
+    - dataValidade: String
+    - volumeMl: int
+    - status: StatusBolsa
+    - hemocentroOrigem: Hemocentro
+    - receptorCpf: String
+    - dataDestinacao: String
+    + getTipoCompleto(): String
+    + estaDisponivel(): boolean
+  }
+
+}
+
+' =======================
+' ADAPTER
+' =======================
+package "adapter" {
+
+  abstract class RecyclerView.Adapter
+
+  class AgendamentoAdapter {
+    - agendamentos: List<Agendamento>
+    - listener: OnAgendamentoClickListener
+    + onCreateViewHolder()
+    + onBindViewHolder()
+    + getItemCount()
+  }
+
+  class BolsaSangueAdapter
+
+  RecyclerView.Adapter <|-- AgendamentoAdapter
+  RecyclerView.Adapter <|-- BolsaSangueAdapter
+}
+
+' =======================
+' RELAÇÕES
+' =======================
+
+' Herança - user
+Doador --|> User
+
+' Herança - adapter
+AgendamentoAdapter --|> RecyclerView.Adapter
+BolsaSangueAdapter --|> RecyclerView.Adapter
+
+' Composição
+Hemocentro *-- Endereco
+
+' Associações
+Agendamento --> Hemocentro
+BolsaSangue --> Hemocentro
+AgendamentoAdapter --> Agendamento
+
+@enduml
