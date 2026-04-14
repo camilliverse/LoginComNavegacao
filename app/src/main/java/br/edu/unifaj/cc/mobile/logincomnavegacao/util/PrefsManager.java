@@ -10,8 +10,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.unifaj.cc.mobile.logincomnavegacao.model.Doacao;
-import br.edu.unifaj.cc.mobile.logincomnavegacao.model.User;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.entity.Agendamento;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.entity.BolsaSangue;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.user.Doador;
 
 /**
  * Classe auxiliar para gerenciar dados no SharedPreferences.
@@ -20,8 +21,9 @@ import br.edu.unifaj.cc.mobile.logincomnavegacao.model.User;
 public class PrefsManager {
     
     private static final String PREF_NAME = "PrefDoacaoSangue";
-    private static final String KEY_USER = "user";
-    private static final String KEY_DOACOES = "doacoes";
+    private static final String KEY_DOADOR = "doador";
+    private static final String KEY_BOLSAS = "bolsas_sangue";
+    private static final String KEY_AGENDAMENTOS = "agendamentos";
     private static final String KEY_LOGGED_EMAIL = "logged_email";
     
     private final SharedPreferences prefs;
@@ -32,91 +34,128 @@ public class PrefsManager {
         this.gson = new Gson();
     }
     
-    /**
-     * Salva os dados do usuário no SharedPreferences.
-     */
-    public void salvarUser(User user) {
-        String json = gson.toJson(user);
-        prefs.edit().putString(KEY_USER, json).apply();
+    public void salvarDoador(Doador doador) {
+        String json = gson.toJson(doador);
+        prefs.edit().putString(KEY_DOADOR, json).apply();
     }
     
-    /**
-     * Recupera o usuário salvo no SharedPreferences.
-     */
-    public User getUser() {
-        String json = prefs.getString(KEY_USER, null);
+    public Doador getDoador() {
+        String json = prefs.getString(KEY_DOADOR, null);
         if (json != null) {
-            return gson.fromJson(json, User.class);
+            return gson.fromJson(json, Doador.class);
         }
         return null;
     }
     
-    /**
-     * Verifica se o usuário existe e se a senha corresponde.
-     */
     public boolean login(String email, String senha) {
-        User user = getUser();
-        if (user != null && user.getEmail().equals(email) && user.getSenha().equals(senha)) {
+        Doador doador = getDoador();
+        if (doador != null && doador.getEmail().equals(email) && doador.getSenha().equals(senha)) {
             prefs.edit().putString(KEY_LOGGED_EMAIL, email).apply();
             return true;
         }
         return false;
     }
     
-    /**
-     * Verifica se há um usuário logado.
-     */
     public boolean isLoggedIn() {
         return prefs.getString(KEY_LOGGED_EMAIL, null) != null;
     }
     
-    /**
-     * Faz logout do usuário.
-     */
     public void logout() {
         prefs.edit().remove(KEY_LOGGED_EMAIL).apply();
     }
     
-    /**
-     * Retorna o email do usuário logado.
-     */
     public String getLoggedEmail() {
         return prefs.getString(KEY_LOGGED_EMAIL, null);
     }
     
-    /**
-     * Salva uma lista de doações no SharedPreferences.
-     */
-    public void salvarDoacoes(List<Doacao> doacoes) {
-        String json = gson.toJson(doacoes);
-        prefs.edit().putString(KEY_DOACOES, json).apply();
+    public void salvarBolsas(List<BolsaSangue> bolsas) {
+        String json = gson.toJson(bolsas);
+        prefs.edit().putString(KEY_BOLSAS, json).apply();
     }
     
-    /**
-     * Recupera a lista de doações do SharedPreferences.
-     */
-    public List<Doacao> getDoacoes() {
-        String json = prefs.getString(KEY_DOACOES, null);
+    public List<BolsaSangue> getBolsas() {
+        String json = prefs.getString(KEY_BOLSAS, null);
         if (json != null) {
-            Type listType = new TypeToken<ArrayList<Doacao>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<BolsaSangue>>(){}.getType();
             return gson.fromJson(json, listType);
         }
         return new ArrayList<>();
     }
     
-    /**
-     * Adiciona uma nova doação à lista existente.
-     */
-    public void adicionarDoacao(Doacao doacao) {
-        List<Doacao> doacoes = getDoacoes();
-        doacoes.add(doacao);
-        salvarDoacoes(doacoes);
+    public void adicionarBolsa(BolsaSangue bolsa) {
+        List<BolsaSangue> bolsas = getBolsas();
+        bolsas.add(bolsa);
+        salvarBolsas(bolsas);
     }
     
-    /**
-     * Limpa todos os dados salvos.
-     */
+    public void salvarAgendamentos(List<Agendamento> agendamentos) {
+        String json = gson.toJson(agendamentos);
+        prefs.edit().putString(KEY_AGENDAMENTOS, json).apply();
+    }
+    
+    public List<Agendamento> getAgendamentos() {
+        String json = prefs.getString(KEY_AGENDAMENTOS, null);
+        if (json != null) {
+            Type listType = new TypeToken<ArrayList<Agendamento>>(){}.getType();
+            return gson.fromJson(json, listType);
+        }
+        return new ArrayList<>();
+    }
+    
+    public void adicionarAgendamento(Agendamento agendamento) {
+        List<Agendamento> agendamentos = getAgendamentos();
+        agendamentos.add(agendamento);
+        salvarAgendamentos(agendamentos);
+    }
+    
+    public void cancelarAgendamento(String agendamentoId) {
+        List<Agendamento> agendamentos = getAgendamentos();
+        for (Agendamento a : agendamentos) {
+            if (a.getId().equals(agendamentoId)) {
+                a.cancelar();
+                break;
+            }
+        }
+        salvarAgendamentos(agendamentos);
+    }
+
+    public List<Agendamento> getAgendamentosPorCpf(String cpf) {
+        List<Agendamento> todos = getAgendamentos();
+        List<Agendamento> filtrados = new ArrayList<>();
+        for (Agendamento a : todos) {
+            if (cpf != null && cpf.equals(a.getCpfDoador())) {
+                filtrados.add(a);
+            }
+        }
+        return filtrados;
+    }
+    
     public void limparDados() {
         prefs.edit().clear().apply();
+    }
+    
+    // Métodos de compatibilidade (deprecated)
+    @Deprecated
+    public void salvarUser(Object user) {
+        if (user instanceof Doador) {
+            salvarDoador((Doador) user);
+        }
+    }
+    
+    @Deprecated
+    public Object getUser() {
+        return getDoador();
+    }
+    
+    @Deprecated
+    public List<?> getDoacoes() {
+        return getBolsas();
+    }
+    
+    @Deprecated
+    public void adicionarDoacao(Object doacao) {
+        if (doacao instanceof BolsaSangue) {
+            adicionarBolsa((BolsaSangue) doacao);
+        }
     }
 }

@@ -14,7 +14,7 @@
         
         <!-- Tela de Login - Activity principal -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,23 +24,34 @@
         
         <!-- Tela de Cadastro -->
         <activity
-            android:name=".CadastroActivity"
+            android:name=".activity.CadastroActivity"
             android:exported="false" />
         
         <!-- Tela Principal (Home) -->
         <activity
-            android:name=".HomeActivity"
+            android:name=".activity.HomeActivity"
             android:exported="false" />
         
         <!-- Tela de Registro de Doação -->
         <activity
-            android:name=".DoacaoActivity"
+            android:name=".activity.DoacaoActivity"
             android:exported="false" />
         
         <!-- Tela de Histórico -->
         <activity
-            android:name=".HistoricoActivity"
+            android:name=".activity.HistoricoActivity"
             android:exported="false" />
+        
+        <!-- Tela de Agendamento -->
+        <activity
+            android:name=".activity.AgendamentoActivity"
+            android:exported="false" />
+        
+        <!-- Tela de Lista de Agendamentos -->
+        <activity
+            android:name=".activity.ListaAgendamentosActivity"
+            android:exported="false" />
+        
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
