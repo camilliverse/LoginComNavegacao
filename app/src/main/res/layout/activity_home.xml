@@ -4,42 +4,56 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="#AD2C2C">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/bungee"
         android:text="Doação de Sangue"
+        android:textColor="#FFFFFF"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtNomeUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/montserrat_medium"
         android:text="Olá, Usuário!"
-        android:textSize="18sp"
-        android:layout_marginBottom="32dp" />
+        android:textColor="#FDEAEA"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnRegistrarDoacao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#9B2020"
+        android:fontFamily="@font/montserrat_medium"
         android:text="Registrar Doação"
-        android:layout_marginBottom="16dp" />
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/btnVerHistorico"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#9B2020"
+        android:fontFamily="@font/montserrat_medium"
         android:text="Ver Histórico"
-        android:layout_marginBottom="16dp" />
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/btnSair"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sair" />
+        android:backgroundTint="#5B0404"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Sair"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>
