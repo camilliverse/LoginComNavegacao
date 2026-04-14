@@ -13,6 +13,9 @@ import java.util.UUID;
 
 import br.edu.unifaj.cc.mobile.logincomnavegacao.R;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.model.entity.BolsaSangue;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.StatusBolsa;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.TipoSanguineo;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.FatorRh;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.util.DateUtils;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.util.PrefsManager;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.util.ValidacaoUtils;
@@ -91,14 +94,16 @@ public class DoacaoActivity extends AppCompatActivity {
         }
         
         // Pega o tipo sanguineo do doador logado
-        String tipoSanguineo = "";
-        String fatorRh = "";
+        TipoSanguineo tipoSanguineo = null;
+        FatorRh fatorRh = null;
         if (prefsManager.getDoador() != null) {
-            String tipo = prefsManager.getDoador().getTipoSanguineo();
-            if (tipo != null && tipo.length() >= 2) {
-                tipoSanguineo = tipo.substring(0, 1);
-                fatorRh = tipo.substring(1);
-            }
+            tipoSanguineo = prefsManager.getDoador().getTipoSanguineo();
+            fatorRh = prefsManager.getDoador().getFatorRh();
+        }
+        
+        if (tipoSanguineo == null || fatorRh == null) {
+            Toast.makeText(this, "Doador sem tipo sanguíneo cadastrado", Toast.LENGTH_SHORT).show();
+            return;
         }
         
         // Gera código único para a bolsa
@@ -109,7 +114,7 @@ public class DoacaoActivity extends AppCompatActivity {
         
         BolsaSangue bolsa = new BolsaSangue(codigo, tipoSanguineo, fatorRh, dataColeta, volumeMl);
         bolsa.setDataValidade(dataValidade);
-        bolsa.setStatus("DISPONIVEL");
+        bolsa.setStatus(StatusBolsa.DISPONIVEL);
         
         prefsManager.adicionarBolsa(bolsa);
         

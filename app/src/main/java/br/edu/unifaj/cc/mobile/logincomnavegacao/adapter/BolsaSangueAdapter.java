@@ -37,7 +37,7 @@ public class BolsaSangueAdapter extends RecyclerView.Adapter<BolsaSangueAdapter.
         holder.txtVolume.setText("Volume: " + bolsa.getVolumeMl() + "ml");
         holder.txtDataColeta.setText("Coleta: " + bolsa.getDataColeta());
         holder.txtValidade.setText("Validade: " + bolsa.getDataValidade());
-        holder.txtStatus.setText("Status: " + bolsa.getStatus());
+        holder.txtStatus.setText("Status: " + bolsa.getStatus().getDescricao());
     }
     
     @Override

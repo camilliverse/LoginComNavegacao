@@ -1,13 +1,17 @@
 package br.edu.unifaj.cc.mobile.logincomnavegacao.model.entity;
 
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.FatorRh;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.StatusBolsa;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.TipoSanguineo;
+
 public class BolsaSangue {
     private String codigo;
-    private String tipoSanguineo;
-    private String fatorRh;
+    private TipoSanguineo tipoSanguineo;
+    private FatorRh fatorRh;
     private String dataColeta;
     private String dataValidade;
     private int volumeMl;
-    private String status;
+    private StatusBolsa status;
     private Hemocentro hemocentroOrigem;
     private String receptorCpf;
     private String dataDestinacao;
@@ -15,14 +19,14 @@ public class BolsaSangue {
     public BolsaSangue() {
     }
 
-    public BolsaSangue(String codigo, String tipoSanguineo, String fatorRh, 
+    public BolsaSangue(String codigo, TipoSanguineo tipoSanguineo, FatorRh fatorRh, 
                       String dataColeta, int volumeMl) {
         this.codigo = codigo;
         this.tipoSanguineo = tipoSanguineo;
         this.fatorRh = fatorRh;
         this.dataColeta = dataColeta;
         this.volumeMl = volumeMl;
-        this.status = "DISPONIVEL";
+        this.status = StatusBolsa.DISPONIVEL;
     }
 
     public String getCodigo() {
@@ -33,19 +37,19 @@ public class BolsaSangue {
         this.codigo = codigo;
     }
 
-    public String getTipoSanguineo() {
+    public TipoSanguineo getTipoSanguineo() {
         return tipoSanguineo;
     }
 
-    public void setTipoSanguineo(String tipoSanguineo) {
+    public void setTipoSanguineo(TipoSanguineo tipoSanguineo) {
         this.tipoSanguineo = tipoSanguineo;
     }
 
-    public String getFatorRh() {
+    public FatorRh getFatorRh() {
         return fatorRh;
     }
 
-    public void setFatorRh(String fatorRh) {
+    public void setFatorRh(FatorRh fatorRh) {
         this.fatorRh = fatorRh;
     }
 
@@ -73,11 +77,11 @@ public class BolsaSangue {
         this.volumeMl = volumeMl;
     }
 
-    public String getStatus() {
+    public StatusBolsa getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusBolsa status) {
         this.status = status;
     }
 
@@ -106,10 +110,13 @@ public class BolsaSangue {
     }
 
     public String getTipoCompleto() {
-        return tipoSanguineo + fatorRh;
+        if (tipoSanguineo == null || fatorRh == null) {
+            return null;
+        }
+        return tipoSanguineo.getValor() + fatorRh.getValor();
     }
 
     public boolean estaDisponivel() {
-        return "DISPONIVEL".equals(status);
+        return status == StatusBolsa.DISPONIVEL;
     }
 }
