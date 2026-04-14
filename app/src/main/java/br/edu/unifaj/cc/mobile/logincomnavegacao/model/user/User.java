@@ -4,16 +4,14 @@ public class User {
     private String nome;
     private String email;
     private String senha;
-    private String tipoSanguineo;
 
     public User() {
     }
 
-    public User(String nome, String email, String senha, String tipoSanguineo) {
+    public User(String nome, String email, String senha) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.tipoSanguineo = tipoSanguineo;
     }
 
     public String getNome() {
@@ -38,13 +36,5 @@ public class User {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public String getTipoSanguineo() {
-        return tipoSanguineo;
-    }
-
-    public void setTipoSanguineo(String tipoSanguineo) {
-        this.tipoSanguineo = tipoSanguineo;
     }
 }
