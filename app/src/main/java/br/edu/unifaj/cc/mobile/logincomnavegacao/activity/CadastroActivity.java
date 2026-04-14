@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import br.edu.unifaj.cc.mobile.logincomnavegacao.R;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.TipoSanguineo;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.FatorRh;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.model.user.Doador;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.util.PrefsManager;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.util.ValidacaoUtils;
@@ -68,10 +70,10 @@ public class CadastroActivity extends AppCompatActivity {
         String email = editEmail.getText().toString().trim();
         String senha = editSenha.getText().toString().trim();
         String cpf = editCpf.getText().toString().trim();
-        String tipoSanguineo = spinnerTipoSanguineo.getSelectedItem().toString();
+        String tipoCompleto = spinnerTipoSanguineo.getSelectedItem().toString();
         
         // Valida campos obrigatórios
-        String validacao = ValidacaoUtils.validarCamposObrigatorios(nome, email, senha, cpf, tipoSanguineo);
+        String validacao = ValidacaoUtils.validarCamposObrigatorios(nome, email, senha, cpf, tipoCompleto);
         if (validacao != null) {
             Toast.makeText(this, validacao, Toast.LENGTH_SHORT).show();
             return;
@@ -93,12 +95,19 @@ public class CadastroActivity extends AppCompatActivity {
             return;
         }
         
-        if (!ValidacaoUtils.validarTipoSanguineo(tipoSanguineo)) {
+        // Parse do tipo sanguíneo (ex: "A+", "A-", "O+", etc.)
+        String tipoStr = tipoCompleto.substring(0, 1);
+        String fatorStr = tipoCompleto.substring(1);
+        
+        TipoSanguineo tipoSanguineo = TipoSanguineo.fromValor(tipoStr);
+        FatorRh fatorRh = FatorRh.fromValor(fatorStr);
+        
+        if (tipoSanguineo == null || fatorRh == null) {
             Toast.makeText(this, "Tipo sanguíneo inválido", Toast.LENGTH_SHORT).show();
             return;
         }
         
-        Doador doador = new Doador(nome, email, senha, tipoSanguineo);
+        Doador doador = new Doador(nome, email, senha, tipoSanguineo, fatorRh);
         doador.setCpf(cpf);
         prefsManager.salvarDoador(doador);
         

@@ -46,8 +46,9 @@ public class HomeActivity extends AppCompatActivity {
         Doador doador = prefsManager.getDoador();
         if (doador != null) {
             txtNomeUsuario.setText("Olá, " + doador.getNome() + "!");
-            if (doador.getTipoSanguineo() != null) {
-                txtTipoSanguineo.setText("Tipo Sanguíneo: " + doador.getTipoSanguineo());
+            String tipoCompleto = doador.getTipoCompleto();
+            if (tipoCompleto != null) {
+                txtTipoSanguineo.setText("Tipo Sanguíneo: " + tipoCompleto);
             }
         }
         

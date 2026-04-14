@@ -3,6 +3,9 @@ package br.edu.unifaj.cc.mobile.logincomnavegacao.util;
 import java.util.Arrays;
 import java.util.List;
 
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.TipoSanguineo;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.FatorRh;
+
 public class ValidacaoUtils {
     
     private static final List<String> TIPOS_SANGUINEOS_VALIDOS = 
@@ -29,6 +32,10 @@ public class ValidacaoUtils {
             return false;
         }
         return TIPOS_SANGUINEOS_VALIDOS.contains(tipo.toUpperCase());
+    }
+    
+    public static boolean validarTipoSanguineoEnum(TipoSanguineo tipo, FatorRh fator) {
+        return tipo != null && fator != null;
     }
     
     public static boolean validarSenha(String senha) {
