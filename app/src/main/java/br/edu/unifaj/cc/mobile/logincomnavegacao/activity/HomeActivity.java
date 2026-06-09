@@ -9,11 +9,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import br.edu.unifaj.cc.mobile.logincomnavegacao.R;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.api.ApiClient;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.model.user.Doador;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.util.PrefsManager;
 
 public class HomeActivity extends AppCompatActivity {
-    
+
     private TextView txtNomeUsuario;
     private TextView txtTipoSanguineo;
     private Button btnRegistrarDoacao;
@@ -22,19 +23,19 @@ public class HomeActivity extends AppCompatActivity {
     private Button btnVerAgendamentos;
     private Button btnSair;
     private PrefsManager prefsManager;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        
+
         prefsManager = new PrefsManager(this);
-        
-        if (!prefsManager.isLoggedIn()) {
+
+        if (ApiClient.getToken(this) == null) {
             irParaLogin();
             return;
         }
-        
+
         txtNomeUsuario = findViewById(R.id.txtNomeUsuario);
         txtTipoSanguineo = findViewById(R.id.txtTipoSanguineo);
         btnRegistrarDoacao = findViewById(R.id.btnRegistrarDoacao);
@@ -42,43 +43,40 @@ public class HomeActivity extends AppCompatActivity {
         btnVerHistorico = findViewById(R.id.btnVerHistorico);
         btnVerAgendamentos = findViewById(R.id.btnVerAgendamentos);
         btnSair = findViewById(R.id.btnSair);
-        
+
         Doador doador = prefsManager.getDoador();
         if (doador != null) {
-            txtNomeUsuario.setText("Olá, " + doador.getNome() + "!");
+            txtNomeUsuario.setText("Ola, " + doador.getNome() + "!");
             String tipoCompleto = doador.getTipoCompleto();
             if (tipoCompleto != null) {
-                txtTipoSanguineo.setText("Tipo Sanguíneo: " + tipoCompleto);
+                txtTipoSanguineo.setText("Tipo Sanguineo: " + tipoCompleto);
             }
         }
-        
+
         btnRegistrarDoacao.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, DoacaoActivity.class);
             startActivity(intent);
         });
-        
         btnAgendarDoacao.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, AgendamentoActivity.class);
             startActivity(intent);
         });
-        
         btnVerHistorico.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, HistoricoActivity.class);
             startActivity(intent);
         });
-        
         btnVerAgendamentos.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, ListaAgendamentosActivity.class);
             startActivity(intent);
         });
-        
         btnSair.setOnClickListener(v -> {
+            ApiClient.limparToken(this);
             prefsManager.logout();
             Toast.makeText(this, "Logout realizado", Toast.LENGTH_SHORT).show();
             irParaLogin();
         });
     }
-    
+
     private void irParaLogin() {
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

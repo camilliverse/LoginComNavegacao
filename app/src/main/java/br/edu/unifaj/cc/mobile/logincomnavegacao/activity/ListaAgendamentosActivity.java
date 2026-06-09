@@ -17,84 +17,133 @@ import java.util.List;
 
 import br.edu.unifaj.cc.mobile.logincomnavegacao.R;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.adapter.AgendamentoAdapter;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.api.AgendamentoResponse;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.api.ApiClient;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.api.ApiService;
 import br.edu.unifaj.cc.mobile.logincomnavegacao.model.entity.Agendamento;
-import br.edu.unifaj.cc.mobile.logincomnavegacao.model.user.Doador;
-import br.edu.unifaj.cc.mobile.logincomnavegacao.util.PrefsManager;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.entity.Endereco;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.entity.Hemocentro;
+import br.edu.unifaj.cc.mobile.logincomnavegacao.model.enums.StatusAgendamento;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ListaAgendamentosActivity extends AppCompatActivity {
-    
+
     private RecyclerView recyclerAgendamentos;
     private TextView txtSemAgendamentos;
     private Button btnVoltar;
-    private PrefsManager prefsManager;
+    private ApiService apiService;
     private AgendamentoAdapter adapter;
     private List<Agendamento> agendamentos;
-    private String cpfDoador;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_agendamentos);
-        
-        prefsManager = new PrefsManager(this);
-        
-        if (!prefsManager.isLoggedIn()) {
+
+        apiService = ApiClient.getInstance(this);
+
+        if (ApiClient.getToken(this) == null) {
             irParaLogin();
             return;
         }
-        
-        Doador doador = prefsManager.getDoador();
-        if (doador == null) {
-            irParaLogin();
-            return;
-        }
-        
-        cpfDoador = doador.getCpf();
-        
+
         recyclerAgendamentos = findViewById(R.id.recyclerAgendamentos);
         txtSemAgendamentos = findViewById(R.id.txtSemAgendamentos);
         btnVoltar = findViewById(R.id.btnVoltar);
-        
+
         recyclerAgendamentos.setLayoutManager(new LinearLayoutManager(this));
-        
-        carregarAgendamentos();
-        
-        btnVoltar.setOnClickListener(v -> finish());
-    }
-    
-    private void carregarAgendamentos() {
-        agendamentos = prefsManager.getAgendamentosPorCpf(cpfDoador);
-        
-        if (agendamentos == null) {
-            agendamentos = new ArrayList<>();
-        }
-        
+
+        agendamentos = new ArrayList<>();
         adapter = new AgendamentoAdapter(agendamentos, new AgendamentoAdapter.OnAgendamentoClickListener() {
             @Override
             public void onCancelarClick(Agendamento agendamento, int position) {
                 confirmarCancelamento(agendamento, position);
             }
         });
-        
         recyclerAgendamentos.setAdapter(adapter);
-        
-        txtSemAgendamentos.setVisibility(agendamentos.isEmpty() ? View.VISIBLE : View.GONE);
-        recyclerAgendamentos.setVisibility(agendamentos.isEmpty() ? View.GONE : View.VISIBLE);
+
+        carregarAgendamentos();
+
+        btnVoltar.setOnClickListener(v -> finish());
     }
-    
+
+    private void carregarAgendamentos() {
+        apiService.listarAgendamentos().enqueue(new Callback<List<AgendamentoResponse>>() {
+            @Override
+            public void onResponse(Call<List<AgendamentoResponse>> call, Response<List<AgendamentoResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    agendamentos.clear();
+                    for (AgendamentoResponse dto : response.body()) {
+                        Agendamento a = new Agendamento();
+                        a.setId(dto.getId());
+                        a.setData(dto.getData());
+                        a.setHora(dto.getHora());
+                        if (dto.getStatus() != null) {
+                            for (StatusAgendamento s : StatusAgendamento.values()) {
+                                if (s.name().equalsIgnoreCase(dto.getStatus())) {
+                                    a.setStatus(s);
+                                    break;
+                                }
+                            }
+                        }
+                        Hemocentro h = new Hemocentro();
+                        h.setNome(dto.getHemocentroNome());
+                        h.setTelefone(dto.getHemocentroTelefone());
+                        Endereco end = new Endereco();
+                        end.setEnderecoCompleto(dto.getHemocentroEndereco());
+                        h.setEndereco(end);
+                        a.setHemocentro(h);
+                        agendamentos.add(a);
+                    }
+                    adapter.notifyDataSetChanged();
+                    atualizarVisibilidade();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AgendamentoResponse>> call, Throwable t) {
+                Toast.makeText(ListaAgendamentosActivity.this,
+                        "Erro de conexao: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void confirmarCancelamento(Agendamento agendamento, int position) {
         new AlertDialog.Builder(this)
             .setTitle("Cancelar Agendamento")
             .setMessage("Tem certeza que deseja cancelar este agendamento?")
             .setPositiveButton("Sim", (dialog, which) -> {
-                prefsManager.cancelarAgendamento(agendamento.getId());
-                Toast.makeText(this, "Agendamento cancelado", Toast.LENGTH_SHORT).show();
-                carregarAgendamentos();
+                apiService.cancelarAgendamento(agendamento.getId()).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(ListaAgendamentosActivity.this,
+                                    "Agendamento cancelado", Toast.LENGTH_SHORT).show();
+                            carregarAgendamentos();
+                        } else {
+                            Toast.makeText(ListaAgendamentosActivity.this,
+                                    "Erro ao cancelar", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(ListaAgendamentosActivity.this,
+                                "Erro de conexao: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             })
-            .setNegativeButton("Não", null)
+            .setNegativeButton("Nao", null)
             .show();
     }
-    
+
+    private void atualizarVisibilidade() {
+        txtSemAgendamentos.setVisibility(agendamentos.isEmpty() ? View.VISIBLE : View.GONE);
+        recyclerAgendamentos.setVisibility(agendamentos.isEmpty() ? View.GONE : View.VISIBLE);
+    }
+
     private void irParaLogin() {
         Intent intent = new Intent(ListaAgendamentosActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

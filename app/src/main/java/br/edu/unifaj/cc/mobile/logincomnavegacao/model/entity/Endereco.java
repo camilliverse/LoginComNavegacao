@@ -8,6 +8,7 @@ public class Endereco {
     private String cidade;
     private String estado;
     private String cep;
+    private String enderecoCompleto;
 
     public Endereco() {
     }
@@ -77,7 +78,12 @@ public class Endereco {
         this.cep = cep;
     }
 
+    public void setEnderecoCompleto(String enderecoCompleto) {
+        this.enderecoCompleto = enderecoCompleto;
+    }
+
     public String getEnderecoCompleto() {
+        if (enderecoCompleto != null) return enderecoCompleto;
         String end = logradouro + ", " + numero;
         if (complemento != null && !complemento.isEmpty()) {
             end += " - " + complemento;
